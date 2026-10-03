@@ -130,10 +130,11 @@ during one traversal form one connected component.
 
 \subsection{\code{one\_cycle()}}
 
-DFS is used with visited vertices, parent information, and the current DFS
-path. In an undirected graph, the immediate parent edge is ignored. A visited
-neighbor that is not the parent identifies a cycle, which is reconstructed
-from the DFS path. The search stops after one valid cycle is found.
+DFS is used with visited vertices and parent information.
+In an undirected graph, the immediate parent edge is ignored.
+A visited neighbor that is not the parent identifies a cycle, which is
+reconstructed using the parent links.
+The search stops after one valid cycle is found.
 
 The returned cycle contains at least three vertices and starts and ends at the
 same vertex. If no cycle exists, an empty result is returned.
@@ -206,7 +207,7 @@ Vertices: 10000
 Edges: 10000
 Algorithm: shortest_paths
 Runtime: 1964.520 ms
-Peak RSS: 114784 KB
+Peak RSS: 114800 KB
 \end{verbatim}
 
 The reported measurements are taken from the completed experiment output.
@@ -283,14 +284,14 @@ tested graph sizes.
 Graph & Algorithm & $V$ & $E$ & Runtime (ms) & Peak RSS (KB)\\
 \midrule
 Cycle & Connected components & 10000 & 10000 & 2.967660 & 5792\\
-Cycle & One cycle & 10000 & 10000 & 2.307820 & 5072\\
-Cycle & Shortest paths & 10000 & 10000 & 1964.520000 & 114784\\
-Empty & Connected components & 10000 & 0 & 7.436240 & 2224\\
-Empty & One cycle & 10000 & 0 & 0.661708 & 1456\\
+Cycle & One cycle & 10000 & 10000 & 2.307820 & 5008\\
+Cycle & Shortest paths & 10000 & 10000 & 1964.520000 & 114800\\
+Empty & Connected components & 10000 & 0 & 7.436240 & 2208\\
+Empty & One cycle & 10000 & 0 & 0.661708 & 1440\\
 Empty & Shortest paths & 10000 & 0 & 0.301341 & 1264\\
-Complete & Connected components & 5000 & 12497500 & 353.426000 & 164560\\
-Complete & One cycle & 5000 & 12497500 & 0.086517 & 2272\\
-Complete & Shortest paths & 5000 & 12497500 & 196.903000 & 162960\\
+Complete & Connected components & 5000 & 12497500 & 353.426000 & 164512\\
+Complete & One cycle & 5000 & 12497500 & 0.086517 & 2256\\
+Complete & Shortest paths & 5000 & 12497500 & 196.903000 & 162944\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -342,7 +343,7 @@ contains 12,497,500 edges, with peak RSS of 164,512 KB for connected
 components and 162,944 KB for shortest paths.
 
 Cycle-graph shortest paths also show substantial memory growth: 2,496 KB at
-$V=1000$, 6,064 KB at $V=2000$, 29,968 KB at $V=5000$, and 114,784 KB at
+$V=1000$, 6,064 KB at $V=2000$, 29,968 KB at $V=5000$, and 114,800 KB at
 $V=10000$. The returned collection contains a full path for every reachable
 destination, so output storage contributes to the measured memory.
 
