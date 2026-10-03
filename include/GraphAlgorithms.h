@@ -11,3 +11,8 @@ std::vector<std::vector<int>> connected_components(
 std::vector<int> one_cycle(
     const Graph& graph
 );
+
+std::vector<std::vector<int>> shortest_paths(
+    const Graph& graph,
+    int source
+);
