@@ -1,0 +1,393 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\definecolor{UFBlue}{HTML}{0021A5}
+\definecolor{UFOrange}{HTML}{FA4616}
+\definecolor{DarkGray}{HTML}{333333}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=UFBlue,
+    urlcolor=UFBlue,
+    pdftitle={COT5405 Assignment 1: Graph Algorithms},
+    pdfauthor={Pradhyuman Singh Shekhawat}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{UFBlue}{COT5405 --- Analysis of Algorithms}}
+\fancyhead[R]{\small\textcolor{DarkGray}{Assignment 1}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+
+% ============================================================
+% TITLE PAGE
+% ============================================================
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+
+\vspace*{0.35in}
+
+\IfFileExists{ufl-logo.png}{
+    \includegraphics[width=2.65in]{ufl-logo.png}
+}{
+    {\Large\textcolor{UFBlue}{\textbf{UNIVERSITY OF FLORIDA}}}\\[2mm]
+    {\color{UFOrange}\rule{2.65in}{1.2pt}}
+}
+
+\vspace{0.65in}
+
+{\Large\textcolor{UFBlue}{\textbf{COT5405 --- ANALYSIS OF ALGORITHMS}}}
+
+\vspace{0.18in}
+
+{\Huge\bfseries\textcolor{DarkGray}{Assignment 1}}
+
+\vspace{0.10in}
+
+{\LARGE\bfseries\textcolor{UFBlue}{Graph Algorithms}}
+
+\vspace{0.30in}
+
+{\color{UFOrange}\rule{4.6in}{1.5pt}}
+
+\vspace{0.45in}
+
+{\large
+\begin{tabular}{r l}
+\textbf{Student:} & Pradhyuman Singh Shekhawat\\
+\textbf{UFID:} & 55742970\\
+\textbf{Course:} & COT5405 --- Analysis of Algorithms\\
+\textbf{Term:} & Fall 2026\\
+\textbf{Language:} & C++17\\
+\textbf{Graph model:} & Undirected adjacency-list graph
+\end{tabular}
+}
+
+\vfill
+
+{\small University of Florida\\[2pt]\today}
+
+\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+% ============================================================
+\section{Assignment Objective}
+
+This assignment implements and evaluates three required graph operations:
+\code{connected\_components()}, \code{one\_cycle()}, and
+\code{shortest\_paths()}. The work also includes a custom graph data
+structure, graph generators, correctness tests, and experiments measuring
+runtime and peak memory for different graph sizes.
+
+The implementation is written in C++17 and does not use an external graph
+library.
+
+% ============================================================
+\section{Graph Representation and Algorithms}
+
+\subsection{Graph Data Structure}
+
+An \textbf{undirected graph} was selected. Vertices are numbered
+$0,\ldots,V-1$ and stored using an adjacency list implemented as a vector of
+vectors. For every undirected edge $(u,v)$, both endpoint adjacency lists
+contain the other vertex.
+
+The graph stores the vertex count, edge count, and adjacency lists. Vertex
+indices are checked when edges are added, and self-loops are rejected. The
+graph representation requires $O(V+E)$ storage.
+
+\subsection{\code{connected\_components()}}
+
+The function performs DFS from every unvisited vertex. All vertices reached
+during one traversal form one connected component.
+
+\[
+\text{Time: }O(V+E)
+\qquad
+\text{Auxiliary space: }O(V)
+\]
+
+\subsection{\code{one\_cycle()}}
+
+DFS is used with visited vertices, parent information, and the current DFS
+path. In an undirected graph, the immediate parent edge is ignored. A visited
+neighbor that is not the parent identifies a cycle, which is reconstructed
+from the DFS path. The search stops after one valid cycle is found.
+
+The returned cycle contains at least three vertices and starts and ends at the
+same vertex. If no cycle exists, an empty result is returned.
+
+\[
+\text{Worst-case time: }O(V+E)
+\qquad
+\text{Auxiliary space: }O(V)
+\]
+
+\subsection{\code{shortest\_paths()}}
+
+Dijkstra's algorithm is used with implicit edge weight $1$ for every edge, as
+required by the assignment. A binary priority queue stores candidate
+vertices, while distance and predecessor arrays support shortest-path
+calculation and reconstruction.
+
+The source-to-source path is the single source vertex, unreachable vertices
+are omitted, and one shortest path is returned for each reachable destination.
+
+\[
+\text{Time: }O((V+E)\log V)
+\]
+
+The returned paths also require memory and reconstruction work, which is
+relevant to the measured experiments.
+
+\begin{table}[ht]
+\centering
+\caption{Implemented graph operations.}
+\begin{tabular}{lll}
+\toprule
+Function & Method & Main complexity\\
+\midrule
+\code{connected\_components()} & DFS & $O(V+E)$\\
+\code{one\_cycle()} & DFS & $O(V+E)$ worst case\\
+\code{shortest\_paths()} & Dijkstra + binary heap & $O((V+E)\log V)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{Correctness Testing and Graph Generation}
+
+\subsection{Correctness Tests}
+
+The test program covers:
+\begin{itemize}
+    \item empty and single-vertex graphs;
+    \item connected and disconnected graphs;
+    \item acyclic graphs and graphs containing one or multiple cycles;
+    \item multiple equally short paths;
+    \item unreachable vertices;
+    \item source-to-source shortest paths;
+    \item expected vertex and edge counts for generated graphs;
+    \item validity of a returned cycle.
+\end{itemize}
+
+The final correctness execution produced:
+
+\begin{verbatim}
+All graph algorithm tests passed.
+\end{verbatim}
+
+A representative simulator result is:
+
+\begin{verbatim}
+Graph: cycle
+Vertices: 10000
+Edges: 10000
+Algorithm: shortest_paths
+Runtime: 1964.520 ms
+Peak RSS: 114784 KB
+\end{verbatim}
+
+The reported measurements are taken from the completed experiment output.
+
+\subsection{Graph Generators}
+
+Three simulation types were implemented: empty graphs, $n$-cycle graphs,
+and complete graphs. For each graph family, graphs with increasing numbers of
+vertices were generated and evaluated using all three required algorithms.
+
+\textbf{Empty graph:} $V$ vertices and no edges, so $E=0$.
+
+\textbf{$n$-cycle:} for $V\geq3$, each vertex is connected to the next and the
+last vertex is connected back to vertex $0$, giving $E=V$.
+
+\textbf{Complete graph:} every pair of distinct vertices is connected, giving
+
+\[
+E=\frac{V(V-1)}{2}.
+\]
+
+The experiments used
+
+\[
+V=\{50,100,500,1000,2000,5000,10000\}
+\]
+
+for cycle and empty graphs, and
+
+\[
+V=\{50,100,500,1000,2000,5000\}
+\]
+
+for complete graphs. The complete-graph experiment stops at $V=5000$
+because the number of edges grows quadratically; at this size there are
+12,497,500 undirected edges.
+
+% ============================================================
+\section{Experimental Methodology}
+
+Each graph configuration was run with all three algorithms. Every
+algorithm/configuration pair was repeated five times.
+
+Runtime was measured inside an isolated algorithm process using a monotonic
+clock. The reported runtime is the average of the five repetitions.
+
+Peak memory was measured using peak resident set size (RSS) for the isolated
+algorithm process. The reported value is the maximum observed peak RSS over
+the five repetitions. This is a process-level peak-memory measurement, not an
+exact allocation trace for the algorithm alone.
+
+Graph generation was performed outside the timed algorithm execution.
+
+The final experiment contains 60 configurations: 21 cycle, 21 empty, and 18
+complete. With three algorithms and five repetitions, this corresponds to
+300 individual algorithm executions.
+
+% ============================================================
+\section{Results and Observations}
+
+\subsection{Selected Measurements}
+
+Table~\ref{tab:largest} gives representative measurements at the largest
+tested size for each graph family. The figures show the trends across all
+tested graph sizes.
+
+\begin{table}[ht]
+\centering
+\caption{Measured runtime and peak RSS at the largest tested size.}
+\label{tab:largest}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Graph & Algorithm & $V$ & $E$ & Runtime (ms) & Peak RSS (KB)\\
+\midrule
+Cycle & Connected components & 10000 & 10000 & 2.967660 & 5792\\
+Cycle & One cycle & 10000 & 10000 & 2.307820 & 5072\\
+Cycle & Shortest paths & 10000 & 10000 & 1964.520000 & 114784\\
+Empty & Connected components & 10000 & 0 & 7.436240 & 2224\\
+Empty & One cycle & 10000 & 0 & 0.661708 & 1456\\
+Empty & Shortest paths & 10000 & 0 & 0.301341 & 1264\\
+Complete & Connected components & 5000 & 12497500 & 353.426000 & 164560\\
+Complete & One cycle & 5000 & 12497500 & 0.086517 & 2272\\
+Complete & Shortest paths & 5000 & 12497500 & 196.903000 & 162960\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Runtime}
+
+For connected components, cycle-graph runtime increased from 0.036134 ms at
+$V=50$ to 2.967660 ms at $V=10000$. Since a cycle has $E=V$, both vertices
+and adjacency entries grow linearly.
+
+The complete-graph connected-components runtime increased from 0.074933 ms at
+$V=50$ to 353.426 ms at $V=5000$. This reflects the quadratic increase in
+the number of edges and is consistent with the $O(V+E)$ bound.
+
+The cycle-detection result illustrates early termination. On the complete
+graph with $V=5000$, a valid cycle was found in only 0.086517 ms even though
+the graph contains 12,497,500 edges. The worst-case complexity remains
+$O(V+E)$, but this input allows the search to stop very early.
+
+For shortest paths on cycle graphs, runtime increased from 0.262750 ms at
+$V=50$ to 84.0515 ms at $V=2000$, 505.021 ms at $V=5000$, and
+1964.520 ms at $V=10000$. The measured cost includes Dijkstra's traversal
+and reconstruction of a complete path for every reachable destination.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/runtime_connected_components.png}
+\caption{Measured runtime of connected-components computation.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/runtime_one_cycle.png}
+\caption{Measured runtime of one-cycle detection.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/runtime_shortest_paths.png}
+\caption{Measured runtime of Dijkstra shortest paths.}
+\end{figure}
+
+\clearpage
+\subsection{Peak Memory}
+
+Complete graphs show the largest process-level peak RSS because the adjacency
+list stores every edge at both endpoints. At $V=5000$, the complete graph
+contains 12,497,500 edges, with peak RSS of 164,512 KB for connected
+components and 162,944 KB for shortest paths.
+
+Cycle-graph shortest paths also show substantial memory growth: 2,496 KB at
+$V=1000$, 6,064 KB at $V=2000$, 29,968 KB at $V=5000$, and 114,784 KB at
+$V=10000$. The returned collection contains a full path for every reachable
+destination, so output storage contributes to the measured memory.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/memory_cycle.png}
+\caption{Measured peak RSS for cycle graphs.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/memory_empty.png}
+\caption{Measured peak RSS for empty graphs.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/memory_complete.png}
+\caption{Measured peak RSS for complete graphs.}
+\end{figure}
+
+\subsection{Overall Observation}
+
+The experiments show that the number of vertices alone does not determine
+performance. The number of edges, graph structure, early termination, and the
+size of the required output all affect measured runtime and memory.
+
+The observations are consistent with the theoretical complexity: sparse
+graphs with $E=\Theta(V)$ scale differently from dense complete graphs with
+$E=\Theta(V^2)$.
+
+% ============================================================
+\section{Conclusion}
+
+The required graph algorithms were implemented using a custom undirected
+adjacency-list representation in C++17. The implementation includes DFS
+connected components, DFS-based one-cycle detection, and Dijkstra shortest
+paths with implicit unit edge weights.
+
+Three graph generators, correctness tests, and a runtime/peak-memory
+experiment framework were also implemented. The final experiments cover
+multiple graph sizes and both sparse and dense graph structures.
+
+The measured results demonstrate the influence of $V$ and $E$ on
+graph-algorithm performance while also showing practical effects of early
+termination and shortest-path output size.
+
+\end{document}
