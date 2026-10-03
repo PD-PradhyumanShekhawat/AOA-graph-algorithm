@@ -1,0 +1,10 @@
+graph_type,algorithm,vertices,edges,runtime_ms,peak_memory_kb
+complete,connected_components,5000,12497500,353.426,164512
+complete,one_cycle,5000,12497500,0.0865168,2256
+complete,shortest_paths,5000,12497500,196.903,162944
+cycle,connected_components,10000,10000,2.96766,5792
+cycle,one_cycle,10000,10000,2.30782,5008
+cycle,shortest_paths,10000,10000,1964.52,114800
+empty,connected_components,10000,0,7.43624,2208
+empty,one_cycle,10000,0,0.661708,1440
+empty,shortest_paths,10000,0,0.301341,1264
