@@ -1,0 +1,4 @@
+criterion=3
+vertices=5663766
+edges=534591
+zone_local_nodes=5999895
