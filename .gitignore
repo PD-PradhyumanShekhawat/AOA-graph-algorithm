@@ -1,4 +1,12 @@
 
+# NASA bonus generated artifacts
+bonus/nasa/preprocessing/build_nasa_graph
+bonus/nasa/execution/run_realgraph
+bonus/nasa/data/*.gz
+bonus/nasa/graphs/*.bin
+bonus/nasa/results/final_execution_logs/
+build-final-check/
+
 # Build artifacts
 build/
 graph_test
@@ -19,3 +27,12 @@ report/*.log
 report/*.out
 report/*.synctex.gz
 report/*.toc
+
+# Finalization/runtime artifacts
+build-final-check/
+bonus/nasa/preprocessing/build_nasa_graph
+bonus/nasa/execution/run_realgraph
+bonus/nasa/data/*.gz
+bonus/nasa/graphs/*.bin
+bonus/nasa/results/final_execution_logs/
+FINALIZE_ON_MAC.sh.before-llvm-fix
