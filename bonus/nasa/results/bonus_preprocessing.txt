@@ -1,0 +1,26 @@
+NASA HIRENASD preprocessing measurements
+
+Machine: 32 GiB RAM Mac used for the experiment.
+
+C1 same-element
+  zone-local node total: 5,999,895
+  global unique nodes: 5,663,766
+  raw edges: 171,626,243
+  unique undirected edges: 53,425,834
+  time: 53.95 s real
+  peak RSS: 4,103,733,248 bytes (~3.82 GiB)
+
+C2 mesh-edge
+  zone-local node total: 5,999,895
+  global unique nodes: 5,663,766
+  raw edges: 114,700,195
+  unique undirected edges: 24,939,650
+  time: 50.11 s real
+  peak RSS: 2,366,275,584 bytes (~2.20 GiB)
+
+C3 boundary-face
+  global unique nodes: 5,663,766
+  raw edges: 1,022,862
+  unique undirected edges: 534,591
+  time: 38.65 s real
+  peak RSS: 547,160,064 bytes (~522 MiB)
