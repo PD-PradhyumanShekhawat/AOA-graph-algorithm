@@ -11,6 +11,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(graph
     src/Graph.cpp
+    src/GraphAlgorithms.cpp
+    src/GraphGenerators.cpp
 )
 
 target_include_directories(graph

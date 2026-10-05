@@ -1,0 +1,10 @@
+adjacency,algorithm,vertices,edges,source,source_degree,runtime_s,peak_rss_bytes,result
+same_element,connected_components,5663766,53425834,,,0.345,530415616,"components=1;largest=5663766"
+same_element,one_cycle,5663766,53425834,,,0.004,52117504,"cycle_vertices=4;start=0;end=0"
+same_element,shortest_paths,5663766,53425834,294859,32,1.251,527532032,"reachable=5663766;max_distance=65"
+mesh_edge,connected_components,5663766,24939650,,,0.222,283181056,"components=1;largest=5663766"
+mesh_edge,one_cycle,5663766,24939650,,,0.004,52133888,"cycle_vertices=4;start=0;end=0"
+mesh_edge,shortest_paths,5663766,24939650,162250,27,1.206,297091072,"reachable=5663766;max_distance=75"
+boundary_face,connected_components,5663766,534591,,,0.034,57311232,"components=5493288;largest=170479"
+boundary_face,one_cycle,5663766,534591,,,0.004,52117504,"cycle_vertices=4;start=0;end=0"
+boundary_face,shortest_paths,5663766,534591,296007,10,0.037,96157696,"reachable=170479;max_distance=177"
